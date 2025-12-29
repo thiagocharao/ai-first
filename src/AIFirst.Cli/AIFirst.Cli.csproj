@@ -11,6 +11,7 @@
     <PackageTags>ai;mcp;cli;tools</PackageTags>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>aifirst</ToolCommandName>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../AIFirst.Mcp/AIFirst.Mcp.csproj" />
