@@ -4,7 +4,7 @@
 
 Keep the pipeline green. Do not suggest or generate changes that would fail these steps.
 
-Run locally before any commit or push (matches `.github/workflows/build.yml`):
+Always run build and tests before pushing (matches `.github/workflows/build.yml`):
 ```bash
 dotnet restore
 dotnet build --configuration Release --no-restore
@@ -63,6 +63,13 @@ dotnet pack --configuration Release --no-build --output ./artifacts
 - Schema parsing and generator output must be covered with tests.
 - Tests must be deterministic and avoid external network or file system dependencies.
 - Update docs (`docs/design.md`, `docs/threat-model.md`) when behavior or security posture changes.
+- If you change `src/**`, run the full test suite (`dotnet test ...`) before pushing.
+- For faster iteration, run the component tests you touched:
+  - `src/AIFirst.Core/**` -> `dotnet test tests/AIFirst.Core.Tests/AIFirst.Core.Tests.csproj`
+  - `src/AIFirst.Mcp/**` or `src/AIFirst.Mcp/Transport/**` -> `dotnet test tests/AIFirst.Mcp.Tests/AIFirst.Mcp.Tests.csproj`
+  - `src/AIFirst.Roslyn/**` -> `dotnet test tests/AIFirst.Roslyn.Tests/AIFirst.Roslyn.Tests.csproj`
+  - `src/AIFirst.Cli/**` -> `dotnet test tests/AIFirst.Cli.Tests/AIFirst.Cli.Tests.csproj`
+  - Cross-cutting changes in `AIFirst.Core` or shared contracts -> run all tests.
 
 ## Security & Observability
 
