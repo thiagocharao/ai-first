@@ -1,12 +1,12 @@
-# AIFirst.CSharp
+# AIFirst.DotNet
 
-[![Build and Test](https://github.com/thiagocharao/ai-first/actions/workflows/build.yml/badge.svg)](https://github.com/thiagocharao/ai-first/actions/workflows/build.yml)
+[![Build and Test](https://github.com/thiagocharao/aifirst-dotnet/actions/workflows/build.yml/badge.svg)](https://github.com/thiagocharao/aifirst-dotnet/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![.NET](https://img.shields.io/badge/.NET-6.0-purple.svg)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
 
-AIFirst.CSharp is an AI-first C# SDK that makes MCP tool-calling feel like native C# with compile-time safety, policy enforcement, and observability. The MVP uses an attribute-based DSL (Option A) so tool contracts become strongly-typed methods with analyzer support.
+AIFirst.DotNet is an AI-first .NET SDK that makes MCP tool-calling feel like native C# with compile-time safety, policy enforcement, and observability. The MVP uses an attribute-based DSL so tool contracts become strongly-typed methods with analyzer support.
 
-## Why AIFirst.CSharp?
+## Why AIFirst.DotNet?
 
 If you're building AI-powered applications in .NET, you've likely hit these problems:
 
@@ -15,7 +15,7 @@ If you're building AI-powered applications in .NET, you've likely hit these prob
 - 🔴 **Debugging nightmares** — "Why did the agent do that?"
 - 🔴 **Governance gaps** — no allowlists, no audit trails
 
-AIFirst.CSharp solves these with:
+AIFirst.DotNet solves these with:
 
 ✅ **Compile-time safety** — tool calls are strongly-typed, validated at build time  
 ✅ **Policy enforcement** — allowlists, redaction, and output checks built-in  
@@ -28,6 +28,7 @@ AIFirst.CSharp solves these with:
 - **Compile-time validation** for tool names and argument shapes
 - **Policy pipeline** for allowlists, redaction, and safety checks
 - **Tracing + replay** for observability and debugging
+- **Broad compatibility** via `netstandard2.0`, `net6.0`, and `net8.0` targets
 
 ## Repo layout
 
@@ -37,6 +38,7 @@ AIFirst.CSharp solves these with:
   /AIFirst.Mcp           # MCP client
   /AIFirst.Roslyn        # Source generator + analyzer
   /AIFirst.Cli           # CLI tool (aifirst)
+  /AIFirst.DotNet        # Meta package (Core + Mcp + Roslyn)
 /samples
   /HelloMcp              # Basic MCP connectivity
   /TypedToolsDemo        # Type-safe tool calls
@@ -48,11 +50,10 @@ AIFirst.CSharp solves these with:
   /AIFirst.Cli.Tests
 /docs
   design.md              # Architecture
-  roadmap.md             # Development plan
   threat-model.md        # Security considerations
 ```
 
-## Attribute DSL (Option A)
+## Attribute DSL
 
 ```csharp
 [Tool("weather.getForecast")]
@@ -69,15 +70,28 @@ dotnet build
 dotnet test
 ```
 
+## Packages and feeds
+
+**Packages**
+- `AIFirst.DotNet` (meta package)
+- `AIFirst.Core`
+- `AIFirst.Mcp`
+- `AIFirst.Roslyn`
+- `AIFirst.Cli` (tool)
+
+**Feeds**
+- NuGet.org for stable releases
+- GitHub Packages for prerelease/nightly builds
+- Azure Artifacts for enterprise/private feeds
+- Cloudsmith for a managed multi-feed option
+
+See `docs/nuget.md` for feed setup and release guidance.
+
 ## Current Status
 
 🚧 **MVP in Progress** — Milestone 0 (Build Foundation) complete
 
-See [CHANGELOG.md](CHANGELOG.md) for details and [docs/roadmap.md](docs/roadmap.md) for the 6-week plan.
-
-## Next steps
-
-See `docs/roadmap.md` for the staged plan.
+See [CHANGELOG.md](CHANGELOG.md) for details and repository issues for implementation progress.
 
 ## Contributing
 
