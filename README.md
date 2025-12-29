@@ -64,11 +64,17 @@ The source generator will emit MCP calls for these tool methods.
 
 ## Build
 
+**Requirements:**
+- .NET 8 SDK (CI environment requirement)
+- .NET 6 SDK minimum for local development (with rollForward)
+
 ```bash
 dotnet restore
 dotnet build
 dotnet test
 ```
+
+**Note:** Tests and samples target net8.0 to match CI. If you have .NET 6 locally, the SDK will roll forward to build net8.0 targets.
 
 ## Packages and feeds
 
