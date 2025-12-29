@@ -6,6 +6,11 @@ obj/
 .vscode/
 TestResults/
 *.nupkg
+*.nupkg.metadata
 packages/
 .idea/
 Generated/
+*.log
+*.swp
+*.swo
+.DS_Store

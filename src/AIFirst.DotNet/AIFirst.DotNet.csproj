@@ -5,11 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
 
-    <PackageId>AIFirst.Mcp</PackageId>
-    <Description>MCP client for AIFirst.DotNet</Description>
-    <PackageTags>ai;mcp;tools</PackageTags>
+    <PackageId>AIFirst.DotNet</PackageId>
+    <Description>Meta package for AIFirst.DotNet (Core + Mcp + Roslyn)</Description>
+    <PackageTags>ai;mcp;dotnet;roslyn;source-generator;tools</PackageTags>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="../AIFirst.Core/AIFirst.Core.csproj" />
+    <ProjectReference Include="../AIFirst.Mcp/AIFirst.Mcp.csproj" />
+    <ProjectReference Include="../AIFirst.Roslyn/AIFirst.Roslyn.csproj" />
   </ItemGroup>
 </Project>

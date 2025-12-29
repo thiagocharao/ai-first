@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIFirst.Roslyn", "src\AIFir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIFirst.Cli", "src\AIFirst.Cli\AIFirst.Cli.csproj", "{931EFE74-915A-491C-81E8-E733D3252911}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIFirst.DotNet", "src\AIFirst.DotNet\AIFirst.DotNet.csproj", "{DE1CC398-6C6C-4B2B-9DAA-10837979A243}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloMcp", "samples\HelloMcp\HelloMcp.csproj", "{10ACA57C-973C-4C7B-8943-8A6C3E674B77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypedToolsDemo", "samples\TypedToolsDemo\TypedToolsDemo.csproj", "{58DF004A-07F3-4F1E-929D-8092C804FCF1}"
@@ -48,6 +50,10 @@ Global
 		{931EFE74-915A-491C-81E8-E733D3252911}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{931EFE74-915A-491C-81E8-E733D3252911}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{931EFE74-915A-491C-81E8-E733D3252911}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE1CC398-6C6C-4B2B-9DAA-10837979A243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE1CC398-6C6C-4B2B-9DAA-10837979A243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE1CC398-6C6C-4B2B-9DAA-10837979A243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE1CC398-6C6C-4B2B-9DAA-10837979A243}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10ACA57C-973C-4C7B-8943-8A6C3E674B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10ACA57C-973C-4C7B-8943-8A6C3E674B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10ACA57C-973C-4C7B-8943-8A6C3E674B77}.Release|Any CPU.ActiveCfg = Release|Any CPU

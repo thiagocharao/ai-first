@@ -2,7 +2,9 @@
 
 ## Overview
 
-AIFirst.CSharp provides a C#-native DSL for calling MCP tools with compile-time validation and governance. The MVP focuses on an attribute-based DSL that becomes strongly-typed tool calls via a Roslyn source generator and analyzer.
+AIFirst.DotNet provides a C#-native DSL for calling MCP tools with compile-time validation and governance. The MVP focuses on an attribute-based DSL that becomes strongly-typed tool calls via a Roslyn source generator and analyzer.
+
+Status note: the CLI workflows and manifest lifecycle below describe the planned MVP flow and are being built across Milestones 1-4.
 
 ## Architecture
 
@@ -24,9 +26,9 @@ graph TD
 - **AIFirst.Roslyn**
   - `[Tool]` attribute, source generator, and analyzer rules.
 - **AIFirst.Cli**
-  - `pull-tools`, `gen`, and `replay` commands.
+  - Planned `pull-tools`, `gen`, and `replay` commands.
 
-## Tool manifest lifecycle
+## Tool manifest lifecycle (planned)
 
 1. `aifirst pull-tools` connects to an MCP server.
 2. Tool schemas are captured in `aifirst.tools.json`.
