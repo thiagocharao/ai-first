@@ -1,52 +1,85 @@
 # Instructions for AI Agents (Copilot, Claude, Cursor, etc.)
 
-## Critical Rule: ALWAYS Validate Before Push
+## ⚠️ CRITICAL: Pre-Commit Validation
 
-**NEVER push code without running local validation first.**
+**NEVER commit or push code without running validation first.**
+
+### Mandatory Pre-Commit Checklist
+
+Before ANY `git commit`, you MUST:
+
+1. **Run full validation:**
+   ```bash
+   ./scripts/validate-ci.sh
+   ```
+
+2. **Check for common issues:**
+   - No build warnings
+   - No test failures
+   - No missing files referenced in .csproj
+   - No XML doc warnings for samples/tests
+   - Icon files exist and match references
+
+3. **If validation fails:**
+   - Fix ALL errors
+   - Re-run validation
+   - Only commit after validation passes
 
 ### Pre-Push Checklist
 
 Before any `git push` or `git push --force`, you MUST:
 
-1. **Run validation script:**
-   ```bash
-   ./scripts/validate-ci.sh
-   ```
+1. **Ensure pre-commit validation passed**
+2. **Verify changes are minimal and focused**
+3. **Check commit message is descriptive**
 
-2. **If validation fails:**
-   - Fix the errors
-   - Re-run validation
-   - Only push after validation passes
+### Common Issues to Catch
 
-3. **For any .csproj or code changes:**
-   - Ensure tests target `net8.0` (not net6.0)
-   - Ensure samples target `net8.0` (not net6.0)
-   - Libraries can multi-target `netstandard2.0;net6.0;net8.0`
+#### Missing Files
+- ❌ `error NU5019: File not found: '/path/to/file'`
+- ✅ Fix: Ensure file exists or remove reference from .csproj
 
-### Common CI Failures
+#### XML Documentation Warnings
+- ❌ `warning CS1591: Missing XML comment for publicly visible type`
+- ✅ Fix: Tests and samples should have `<IsPackable>false</IsPackable>`
+- ✅ Fix: Only libraries need `GenerateDocumentationFile`
 
-- **"Framework 'Microsoft.NETCore.App', version '6.0.0' not found"**
-  - Fix: Update test/sample projects to `<TargetFramework>net8.0</TargetFramework>`
-  
-- **"ValueTask not found" or "IsExternalInit" errors for netstandard2.0**
-  - Fix: Ensure `System.Threading.Tasks.Extensions` package reference
-  - Fix: Ensure `IsExternalInit` polyfill is included
+#### Target Framework Mismatches
+- ❌ Tests/samples target net6.0 but CI has net8.0
+- ✅ Fix: Ensure tests/samples/CLI target `net8.0`
+- ✅ Fix: Libraries multi-target `netstandard2.0;net6.0;net8.0`
 
-- **Build succeeds but tests fail**
-  - Fix: Run `dotnet restore` after any project file changes
-  - Fix: Ensure `--no-build` isn't used without building first
+#### Netstandard2.0 Compatibility
+- ❌ `ValueTask` or `IsExternalInit` not found
+- ✅ Fix: Add `System.Threading.Tasks.Extensions` package
+- ✅ Fix: Include `IsExternalInit` polyfill
+
+#### Build Artifacts
+- ❌ Committing `bin/`, `obj/`, `.vs/` folders
+- ✅ Fix: Ensure `.gitignore` is correct
+
+## For any .csproj or code changes:
+- Ensure tests target `net8.0` (not net6.0)
+- Ensure samples target `net8.0` (not net6.0)
+- Libraries can multi-target `netstandard2.0;net6.0;net8.0`
+- Tests and samples must have `<IsPackable>false</IsPackable>`
 
 ### Validation Commands
 
 ```bash
-# Full CI simulation
+# Full CI simulation (recommended)
+./scripts/validate-ci.sh
+
+# Manual validation
 dotnet restore
 dotnet build --configuration Release
 dotnet test --configuration Release --no-build
 
-# Quick validation (Debug)
-dotnet build
-dotnet test --no-build
+# Check for warnings (should be 0)
+dotnet build --configuration Release 2>&1 | grep -i warning
+
+# Verify pack works
+dotnet pack --configuration Release --no-build --output ./artifacts
 ```
 
 ## Code Standards
