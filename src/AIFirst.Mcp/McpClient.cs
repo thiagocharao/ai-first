@@ -7,7 +7,14 @@ namespace AIFirst.Mcp;
 /// </summary>
 public interface IMcpClient
 {
+    /// <summary>
+    /// Lists all available tools from the MCP server.
+    /// </summary>
     Task<IReadOnlyList<ToolContract>> ListToolsAsync(CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Calls a tool via the MCP server.
+    /// </summary>
     Task<ToolResult> CallToolAsync(ToolCall call, CancellationToken cancellationToken = default);
 }
 
@@ -16,12 +23,14 @@ public interface IMcpClient
 /// </summary>
 public sealed class McpClientAdapter : IMcpClient
 {
+    /// <inheritdoc />
     public Task<IReadOnlyList<ToolContract>> ListToolsAsync(CancellationToken cancellationToken = default)
     {
         IReadOnlyList<ToolContract> tools = Array.Empty<ToolContract>();
         return Task.FromResult(tools);
     }
 
+    /// <inheritdoc />
     public Task<ToolResult> CallToolAsync(ToolCall call, CancellationToken cancellationToken = default)
     {
         var result = new ToolResult(call.Name, "{}");

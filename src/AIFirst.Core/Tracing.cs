@@ -13,5 +13,8 @@ public sealed record TraceEvent(
 /// </summary>
 public interface ITraceSink
 {
+    /// <summary>
+    /// Writes a trace event to the sink.
+    /// </summary>
     ValueTask WriteAsync(TraceEvent traceEvent, CancellationToken cancellationToken = default);
 }
