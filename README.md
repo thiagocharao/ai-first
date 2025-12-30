@@ -4,28 +4,46 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
 
-AIFirst.DotNet is an AI-first .NET SDK that makes MCP tool-calling feel like native C# with compile-time safety, policy enforcement, and observability. The MVP uses an attribute-based DSL so tool contracts become strongly-typed methods with analyzer support.
+AIFirst.DotNet is an AI-first .NET SDK that makes MCP tool-calling feel like native C# with compile-time safety, policy enforcement, and observability.
 
-## Why AIFirst.DotNet?
+## The Problem
 
-If you're building AI-powered applications in .NET, you've likely hit these problems:
+When building AI agents that call external tools, you face:
 
-- 🔴 **Runtime tool failures** — typos in tool names, schema mismatches
-- 🔴 **Security concerns** — PII leakage, prompt injection via tool outputs
-- 🔴 **Debugging nightmares** — "Why did the agent do that?"
-- 🔴 **Governance gaps** — no allowlists, no audit trails
+| Problem | Impact |
+|---------|--------|
+| Typo in tool name | Runtime crash in production |
+| Schema mismatch | Silent failures, weird behavior |
+| PII in logs | Compliance violations |
+| "Why did AI do that?" | Impossible to debug |
 
-AIFirst.DotNet solves these with:
+## The Solution
 
-✅ **Compile-time safety** — tool calls are strongly-typed, validated at build time  
-✅ **Policy enforcement** — allowlists, redaction, and output checks built-in  
-✅ **Observability** — trace every prompt and tool call for debugging and compliance  
-✅ **MCP-native** — leverage the emerging standard for tool interoperability
+AIFirst.DotNet gives you typed tool calls with build-time validation:
 
-## Features
+```csharp
+// ❌ Without AIFirst: Runtime errors, no safety
+var result = await llm.CallTool("send_emal", jsonArgs); // typo discovered in prod
 
-### MCP Client
-Connect to any MCP-compliant server and discover tools:
+// ✅ With AIFirst: Compile-time safety
+[Tool("email.send")]
+public partial Task<EmailResult> SendEmailAsync(SendEmailRequest request);
+// ^ Build fails if tool doesn't exist or schema is wrong
+```
+
+**See [Use Cases](docs/use-cases.md) for detailed scenarios and when to use AIFirst.DotNet.**
+
+## Quick Start
+
+```bash
+# 1. Discover tools from an MCP server
+aifirst pull-tools npx @modelcontextprotocol/server-filesystem /tmp
+
+# 2. Generate C# DTOs
+aifirst gen aifirst.tools.json --namespace MyApp.Tools
+
+# 3. Use typed tools in your code
+```
 
 ```csharp
 await using var transport = new StdioMcpTransport("npx", "@modelcontextprotocol/server-filesystem", "/tmp");
@@ -35,68 +53,34 @@ var tools = await client.ListToolsAsync();
 var result = await client.CallToolAsync("read_file", new { path = "/tmp/test.txt" });
 ```
 
-### JSON Schema Parser & Code Generation
-Parse tool schemas and generate strongly-typed DTOs:
+## Features
 
-```csharp
-// Parse JSON Schema
-var schema = JsonSchemaParser.Parse(toolSchema);
+| Feature | Status | Description |
+|---------|--------|-------------|
+| MCP Client | ✅ | Connect to any MCP server via stdio |
+| Schema Parser | ✅ | Parse JSON Schema from tool definitions |
+| Code Generator | ✅ | Generate C# records from schemas |
+| CLI Tool | ✅ | `pull-tools` and `gen` commands |
+| Source Generator | 🚧 | `[Tool]` attribute with build-time validation |
+| Policy Pipeline | 📋 | Allowlists, redaction, output checks |
+| Tracing | 📋 | Capture and replay tool calls |
 
-// Generate C# records
-var code = DtoGenerator.GenerateRecord(schema, "WeatherRequest", "MyApp.Tools");
-```
+## Testing with MCP Servers
 
-### CLI Tool
+AIFirst.DotNet works with any MCP-compliant server. Try these official ones:
+
 ```bash
-# Discover tools from MCP server and save manifest
+# Filesystem operations
 aifirst pull-tools npx @modelcontextprotocol/server-filesystem /tmp
 
-# Generate C# DTOs from manifest
-aifirst gen aifirst.tools.json --namespace MyApp.Tools --output Tools.cs
+# Memory/knowledge graph
+aifirst pull-tools npx @modelcontextprotocol/server-memory
+
+# Git operations  
+aifirst pull-tools npx @modelcontextprotocol/server-git
 ```
 
-### Attribute DSL (Coming Soon)
-```csharp
-[Tool("weather.getForecast")]
-public static partial Task<Forecast> GetForecastAsync(ForecastRequest request);
-```
-
-The source generator will emit MCP calls for these tool methods.
-
-## Repo Layout
-
-```
-/src
-  /AIFirst.Core          # Core abstractions, schema parser, code generator
-  /AIFirst.Mcp           # MCP client and transports
-  /AIFirst.Roslyn        # Source generator + analyzer
-  /AIFirst.Cli           # CLI tool (aifirst)
-  /AIFirst.DotNet        # Meta package (Core + Mcp + Roslyn)
-/samples
-  /HelloMcp              # Basic MCP connectivity
-  /TypedToolsDemo        # Type-safe tool calls and code generation
-  /PolicyAndTracingDemo  # Governance and observability
-/tests
-  /AIFirst.Core.Tests
-  /AIFirst.Mcp.Tests
-  /AIFirst.Roslyn.Tests
-  /AIFirst.Cli.Tests
-/docs
-  design.md              # Architecture
-  threat-model.md        # Security considerations
-```
-
-## Build
-
-**Requirements:**
-- .NET 8 SDK (CI environment requirement)
-- .NET 6 SDK minimum for local development (with rollForward)
-
-```bash
-dotnet restore
-dotnet build
-dotnet test
-```
+See [MCP Server Directory](https://www.mcplist.ai/) for 775+ community servers.
 
 ## Packages
 
@@ -107,6 +91,16 @@ dotnet test
 | `AIFirst.Mcp` | MCP client and transports |
 | `AIFirst.Roslyn` | Source generator and analyzers |
 | `AIFirst.Cli` | CLI tool (`aifirst`) |
+
+## Build
+
+```bash
+dotnet restore
+dotnet build
+dotnet test
+```
+
+Requires .NET 8 SDK.
 
 ## Roadmap
 
@@ -123,6 +117,12 @@ Track development progress and upcoming features on the [Issues page](https://gi
 **Planned:**
 - M4: Policy pipeline and tracing
 - M5: Documentation and release
+
+## Documentation
+
+- [Use Cases](docs/use-cases.md) - When and why to use AIFirst.DotNet
+- [Design](docs/design.md) - Architecture and components
+- [Threat Model](docs/threat-model.md) - Security considerations
 
 ## Contributing
 
