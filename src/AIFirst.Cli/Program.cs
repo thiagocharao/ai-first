@@ -90,7 +90,9 @@ public static class Program
                 {
                     name = t.Name,
                     description = t.Description,
-                    inputSchema = t.ParametersSchemaJson,
+                    inputSchema = string.IsNullOrEmpty(t.ParametersSchemaJson) 
+                        ? (object?)null 
+                        : JsonSerializer.Deserialize<JsonElement>(t.ParametersSchemaJson),
                     metadata = t.Metadata
                 })
             };

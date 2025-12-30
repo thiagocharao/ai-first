@@ -50,8 +50,13 @@ public static class CSharpTypeMapper
             return schema.Format.ToLowerInvariant() switch
             {
                 "date-time" => "DateTimeOffset",
+#if NET6_0_OR_GREATER
                 "date" => "DateOnly",
                 "time" => "TimeOnly",
+#else
+                "date" => "DateTime",
+                "time" => "TimeSpan",
+#endif
                 "uri" => "Uri",
                 "uuid" => "Guid",
                 "guid" => "Guid",

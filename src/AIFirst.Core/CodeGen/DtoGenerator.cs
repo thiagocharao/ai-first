@@ -110,7 +110,8 @@ public static class DtoGenerator
 
             var csharpType = GetPropertyType(propSchema, name, nestedTypes, typeName);
 
-            if (!isRequired && !csharpType.EndsWith("?") && !IsReferenceType(csharpType))
+            // Add nullability for optional properties (both value and reference types)
+            if (!isRequired && !csharpType.EndsWith("?"))
             {
                 csharpType += "?";
             }
